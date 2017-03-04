@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--主题色调-->
+    <color name="colorPrimary">#1396DB</color>
+    <color name="colorPrimaryDark">#1396DB</color>
+    <color name="colorAccent">#1396DB</color>
+
+    <!--字体颜色-->
+    <color name="colorTextLight">#ffffffff</color>
+    <color name="colorTextDark">#de000000</color>
+    <color name="colorTextGray">#778899</color>
+
+    <!--背景颜色-->
+    <color name="colorBackgroundWhite">#ffffffff</color>
+    <color name="colorBackgroundWhiteSmoke">#F5F5F5</color>
+    <color name="colorBackgroundLightGray">#D3D3D3</color>
+    <color name="colorBackgroundDarkGray">#778899</color>
+
+</resources>
