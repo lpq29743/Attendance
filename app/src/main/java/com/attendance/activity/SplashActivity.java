@@ -31,7 +31,6 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 Intent intent = new Intent();
-                sharedFileUtil.putBoolean("localMode", false);
                 boolean hasLogin = sharedFileUtil.getBoolean("hasLogin");
                 if (hasLogin) {
                     intent.setClass(SplashActivity.this,

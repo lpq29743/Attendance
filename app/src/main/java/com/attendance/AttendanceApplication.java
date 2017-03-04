@@ -1,4 +1,4 @@
-package com.attendance.activity;
+package com.attendance;
 
 import android.app.Application;
 import android.content.Context;

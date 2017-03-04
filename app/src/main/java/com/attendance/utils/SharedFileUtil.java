@@ -1,6 +1,6 @@
 package com.attendance.utils;
 
-import com.attendance.activity.AttendanceApplication;
+import com.attendance.AttendanceApplication;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -23,7 +23,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.attendance.R;
+import com.attendance.contract.LoginContract;
 import com.attendance.entities.ConstParameter;
+import com.attendance.presenter.LoginPresenter;
 import com.attendance.utils.AESUtil;
 import com.attendance.utils.NetWorkUtil;
 import com.attendance.utils.SharedFileUtil;
@@ -39,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements LoginContract.View {
 
     @BindView(R.id.username_et)
     EditText mUsernameEt;
@@ -54,14 +56,12 @@ public class LoginActivity extends Activity {
     @BindView(R.id.student)
     RadioButton mStuBtn;
 
-    private String username, password;
     private boolean isTeacher = false;
     private boolean isRemPassword = false;
 
     private MyEditorActionListener myEditorActionListener = new MyEditorActionListener();
     private SharedFileUtil sharedFileUtil = new SharedFileUtil();
-    private NetWorkUtil netWorkUtils = new NetWorkUtil();
-    public ProgressDialog progressDialog;
+    private LoginContract.Presenter presenter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +81,9 @@ public class LoginActivity extends Activity {
         }
 
         initView();
+
+        presenter = new LoginPresenter(this);
+
     }
 
     private void initView() {
@@ -122,98 +125,6 @@ public class LoginActivity extends Activity {
 
     }
 
-    public void login() {
-        //数据检验及网络情况检测
-        username = mUsernameEt.getText().toString();
-        password = mPasswordEt.getText().toString();
-        Boolean netStatus = netWorkUtils.checkNetWorkEx(LoginActivity.this);
-        if ("".compareTo(username) == 0 || "".compareTo(password) == 0) {
-            Toast.makeText(this, "帐号或密码不能为空", Toast.LENGTH_SHORT).show();
-        } else if (!netStatus) {
-            Toast.makeText(this, "网络状况不佳，请检查网络情况", Toast.LENGTH_SHORT).show();
-        } else {
-            loginPost(username, password, isTeacher);
-        }
-    }
-
-    public void loginPost(final String username, final String password, final boolean isTeacher) {
-
-        showProgressDialog();
-
-        //本地数据测试
-        boolean localMode = sharedFileUtil.getBoolean("localMode");
-        if (localMode) {
-            Map<String, String> map = new HashMap<>();
-            final String teacher_username = "1";
-            final String teacher_password = "123";
-            final String student_username = "2";
-            final String student_password = "456";
-            if (isTeacher && username.equals(teacher_username) && password.equals(teacher_password)) {
-                map.put("result", "Success");
-                map.put("name", "大牛");
-            } else if (!isTeacher && username.equals(student_username) && password.equals(student_password)) {
-                map.put("result", "Success");
-                map.put("name", "小白");
-            } else
-                map.put("result", "Failed");
-            progressDialog.cancel();
-            if (map.get("result").equals("Success")) {
-                Toast.makeText(this, ConstParameter.LOGIN_SUCCESS, Toast.LENGTH_SHORT).show();
-                writeData(map.get("name"));
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                LoginActivity.this.startActivity(intent);
-                LoginActivity.this.finish();
-                LoginActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            } else {
-                Toast.makeText(this, ConstParameter.LOGIN_FAILED, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            String url = ConstParameter.SERVER_ADDRESS + "/login.php";
-            VolleyUtil volleyUtil = VolleyUtil.getInstance(LoginActivity.this);
-
-            Map<String, String> loginMap = new HashMap<>();
-            loginMap.put("username", username);
-            loginMap.put("password", password);
-            loginMap.put("isTeacher", isTeacher + "");
-            JSONObject loginObject = new JSONObject(loginMap);
-
-            JsonObjectRequest mLoginRequest = new JsonObjectRequest(Request.Method.POST, url, loginObject,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject jsonObject) {
-                            progressDialog.cancel();
-                            try {
-                                if (jsonObject.getString("result").equals("success")) {
-                                    writeData(jsonObject.getString("name"));
-                                    Toast.makeText(LoginActivity.this, ConstParameter.LOGIN_SUCCESS, Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    LoginActivity.this.startActivity(intent);
-                                    LoginActivity.this.finish();
-                                    LoginActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                } else if (jsonObject.getString("result").equals("failed")) {
-                                    Toast.makeText(LoginActivity.this, ConstParameter.LOGIN_FAILED, Toast.LENGTH_SHORT).show();
-                                } else if (jsonObject.getString("result").equals("error")) {
-                                    Toast.makeText(LoginActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            progressDialog.cancel();
-                            Toast.makeText(LoginActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-            volleyUtil.addToRequestQueue(mLoginRequest);
-        }
-
-    }
-
     private void writeData(final String name) {
         sharedFileUtil.putBoolean("hasLogin", true);
         sharedFileUtil.putString("username", username);
@@ -227,26 +138,36 @@ public class LoginActivity extends Activity {
         sharedFileUtil.putBoolean("isTeacher", isTeacher);
     }
 
-    private void showProgressDialog() {
-        //创建ProgressDialog对象
-        progressDialog = new ProgressDialog(LoginActivity.this);
-        // 设置进度条风格，风格为圆形，旋转的
+    @Override
+    public void loginSuccess() {
+    }
+
+    @Override
+    public void setPresenter(LoginContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showTip(String tip){
+        Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showProgress(String msg) {
+        ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // 设置ProgressDialog 提示信息
-        progressDialog.setMessage("登录中……");
-        // 设置初始位置
+        progressDialog.setMessage(msg);
         progressDialog.setProgress(50);
-        // 设置ProgressDialog 的进度条是否不明确
         progressDialog.setIndeterminate(false);
-        // 设置ProgressDialog 是否可以按退回按键取消
         progressDialog.setCancelable(true);
-        // 让ProgressDialog显示
         progressDialog.show();
     }
 
     @OnClick(R.id.login_btn)
     public void startLogin() {
-        LoginActivity.this.login();
+        String username = mUsernameEt.getText().toString();
+        String password = mPasswordEt.getText().toString();
+        presenter.login(username, password);
     }
 
     @OnClick(R.id.register_tv)
