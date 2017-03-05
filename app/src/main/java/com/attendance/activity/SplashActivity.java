@@ -1,20 +1,17 @@
 package com.attendance.activity;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.attendance.R;
-import com.attendance.utils.SharedFileUtil;
+import com.attendance.contract.SplashContract;
+import com.attendance.presenter.SplashPresenter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.app.Activity;
-import android.content.Intent;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends Activity implements SplashContract.View {
 
-    private long splashDelay = 2000;
-    private SharedFileUtil sharedFileUtil = new SharedFileUtil();
+    private SplashContract.Presenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,28 +23,35 @@ public class SplashActivity extends Activity {
             finish();
             return;
         }
-        TimerTask task = new TimerTask() {
+        presenter = new SplashPresenter(this);
+        presenter.startTimeTask();
+    }
 
-            @Override
-            public void run() {
-                Intent intent = new Intent();
-                boolean hasLogin = sharedFileUtil.getBoolean("hasLogin");
-                if (hasLogin) {
-                    intent.setClass(SplashActivity.this,
-                            MainActivity.class);
-                } else {
-                    intent.setClass(SplashActivity.this,
-                            LoginActivity.class);
-                }
-                startActivity(intent);
-                finish();
-                overridePendingTransition(android.R.anim.fade_in,
-                        android.R.anim.fade_out);
-            }
+    @Override
+    public void setPresenter(SplashContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
 
-        };
-        Timer timer = new Timer();
-        timer.schedule(task, splashDelay);
+    @Override
+    public void startLoginActivity() {
+        Intent intent = new Intent();
+        intent.setClass(SplashActivity.this,
+                LoginActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+    }
+
+    @Override
+    public void startMainActivity() {
+        Intent intent = new Intent();
+        intent.setClass(SplashActivity.this,
+                MainActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in,
+                android.R.anim.fade_out);
     }
 
 }

@@ -1,10 +1,17 @@
 package com.attendance.presenter;
 
-import android.app.Application;
-
 import com.attendance.AttendanceApplication;
 import com.attendance.contract.LoginContract;
+import com.attendance.entities.ConstParameter;
+import com.attendance.http.AttendService;
 import com.attendance.utils.NetWorkUtil;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.fastjson.FastJsonConverterFactory;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by peiqin on 3/4/2017.
@@ -20,7 +27,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void login(String username, String password) {
+    public void login(String username, String password, String isTeacher) {
 
         if ("".compareTo(username) == 0 || "".compareTo(password) == 0) {
             view.showTip("帐号或密码不能为空");
@@ -35,19 +42,31 @@ public class LoginPresenter implements LoginContract.Presenter {
 
         view.showProgress("登录中……");
 
-        String url = ConstParameter.SERVER_ADDRESS + "/login.php";
-        VolleyUtil volleyUtil = VolleyUtil.getInstance(LoginActivity.this);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ConstParameter.SERVER_ADDRESS)
+                .addConverterFactory(FastJsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
 
-        Map<String, String> loginMap = new HashMap<>();
-        loginMap.put("username", username);
-        loginMap.put("password", password);
-        loginMap.put("isTeacher", isTeacher + "");
-        JSONObject loginObject = new JSONObject(loginMap);
+        AttendService attendService = retrofit.create(AttendService.class);
 
-        JsonObjectRequest mLoginRequest = new JsonObjectRequest(Request.Method.POST, url, loginObject,
-                new Response.Listener<JSONObject>() {
+        attendService.login(username, password, isTeacher)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
                     @Override
-                    public void onResponse(JSONObject jsonObject) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.cancel();
+                        Toast.makeText(LoginActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(String result) {
                         progressDialog.cancel();
                         try {
                             if (jsonObject.getString("result").equals("success")) {
@@ -68,19 +87,8 @@ public class LoginPresenter implements LoginContract.Presenter {
                             e.printStackTrace();
                         }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        progressDialog.cancel();
-                        Toast.makeText(LoginActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
-                    }
                 });
-        volleyUtil.addToRequestQueue(mLoginRequest);
+
     }
-
-    loginPost(username, password, isTeacher);
-
-}
 
 }

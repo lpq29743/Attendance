@@ -7,21 +7,19 @@ import com.attendance.BaseView;
  * Created by peiqin on 3/4/2017.
  */
 
-public interface LoginContract {
+public interface SplashContract {
 
     interface View extends BaseView<Presenter> {
 
-        void showTip(String tip);
+        void startLoginActivity();
 
-        void showProgress(String msg);
-
-        void loginSuccess();
+        void startMainActivity();
 
     }
 
     interface Presenter extends BasePresenter {
 
-        void login(String username, String password, String isTeacher);
+        void startTimeTask();
 
     }
 

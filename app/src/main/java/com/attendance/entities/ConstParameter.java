@@ -2,12 +2,6 @@ package com.attendance.entities;
 
 public class ConstParameter {
 
-    //服务器
-    //public static final String SERVER_ADDRESS = "http://192.168.191.1:8080/Attendance";
-    //public static final String SERVER_ADDRESS = "http://192.168.1.104:80/Attendance";
-    //public static final String SERVER_ADDRESS = "http://192.168.155.1:8080/Attendance";
-    //腾讯云服务器
-    public static final String SERVER_ADDRESS = "http://139.199.202.214/Attendance/";
     public static final String SERVER_ERROR = "服务器错误";
 
     //登录信息

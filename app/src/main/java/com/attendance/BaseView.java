@@ -8,8 +8,4 @@ public interface BaseView<T> {
 
     void setPresenter(T presenter);
 
-    void showTip(String tip);
-
-    void showProgress(String msg);
-
 }

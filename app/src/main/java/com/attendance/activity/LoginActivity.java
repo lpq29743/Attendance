@@ -56,7 +56,6 @@ public class LoginActivity extends Activity implements LoginContract.View {
     @BindView(R.id.student)
     RadioButton mStuBtn;
 
-    private boolean isTeacher = false;
     private boolean isRemPassword = false;
 
     private MyEditorActionListener myEditorActionListener = new MyEditorActionListener();
@@ -147,12 +146,10 @@ public class LoginActivity extends Activity implements LoginContract.View {
         this.presenter = presenter;
     }
 
-    @Override
     public void showTip(String tip){
         Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
     public void showProgress(String msg) {
         ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -167,7 +164,7 @@ public class LoginActivity extends Activity implements LoginContract.View {
     public void startLogin() {
         String username = mUsernameEt.getText().toString();
         String password = mPasswordEt.getText().toString();
-        presenter.login(username, password);
+        presenter.login(username, password, isTeacher);
     }
 
     @OnClick(R.id.register_tv)
