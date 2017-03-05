@@ -2,14 +2,15 @@ package com.attendance.http;
 
 import com.attendance.AttendanceApplication;
 import com.attendance.dao.CourseDao;
+import com.attendance.entities.ResultBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subjects.Subject;
 
 /**
  * Created by peiqin on 3/5/2017.
@@ -32,18 +33,21 @@ public class HttpMethods {
         return SingletonHolder.INSTANCE;
     }
 
-    public void login(Subscriber<List<Subject>> subscriber, String username, String password, boolean isTeacher) {
+    public void login(Subscriber<Boolean> subscriber, String username, String password, boolean isTeacher) {
 
         boolean result = false;
         if (username.equals("1") && password.equals("1") && isTeacher) {
             result = true;
         }
         Observable observable = Observable.just(result);
-        toSubscribe(observable, subscriber);
+        observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
 
     }
 
-    public void getCourseList(Subscriber<List<Subject>> subscriber) {
+    public void getCourseList(Subscriber<Boolean> subscriber) {
 
         CourseDao courseDao = new CourseDao(AttendanceApplication.getContext());
         courseDao.delAll();
@@ -53,15 +57,26 @@ public class HttpMethods {
 
         boolean result = true;
         Observable observable = Observable.just(result);
-        toSubscribe(observable, subscriber);
+        observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
 
     }
 
-    private <T> void toSubscribe(Observable<T> o, Subscriber<T> s) {
-        o.subscribeOn(Schedulers.io())
+    public void getStatList(Subscriber<ResultBean> subscriber) {
+
+        List<ResultBean> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            list.add(new ResultBean("student" + "", i + "", i + "", i + "", i + ""));
+        }
+
+        Observable observable = Observable.from(list);
+        observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s);
+                .subscribe(subscriber);
+
     }
 
 }

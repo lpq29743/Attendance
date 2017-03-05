@@ -34,10 +34,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         SwipeRefreshLayout.OnRefreshListener, MainContract.View {
 
-    @BindView(R.id.name_tv)
-    TextView mNameTv;
-    @BindView(R.id.username_tv)
-    TextView mUsernameTv;
     @BindView(R.id.empty_tv)
     TextView mEmptyTv;
     @BindView(R.id.course_lv)
@@ -79,10 +75,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerLayout = navigationView.getHeaderView(0);
         sharedFileUtil = new SharedFileUtil();
         String username = sharedFileUtil.getString("username");
-        mNameTv.setText(R.string.fake_teacher);
-        mUsernameTv.setText(username);
+        ((TextView) headerLayout.findViewById(R.id.name_tv)).setText(R.string.fake_teacher);;
+        ((TextView) headerLayout.findViewById(R.id.username_tv)).setText(username);
         initContentView();
     }
 
@@ -112,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String courseName = ((CourseBean) courseAdapter.getItem(position)).getName();
                 Intent intent = new Intent(MainActivity.this, CourseActivity.class);
                 intent.putExtra("name", courseName);
-                intent.putExtra("teacherName", R.string.fake_teacher);
                 startActivityForResult(intent, 0);
             }
         });

@@ -12,7 +12,7 @@ import rx.Subscriber;
  * Created by peiqin on 3/5/2017.
  */
 
-public class GetCourseSubscriber<Boolean> extends Subscriber<Boolean> {
+public class GetCourseSubscriber extends Subscriber<Boolean> {
 
     private MainContract.View view;
 
@@ -52,7 +52,7 @@ public class GetCourseSubscriber<Boolean> extends Subscriber<Boolean> {
     @Override
     public void onNext(Boolean result) {
 
-        if (result.equals("true")) {
+        if (result) {
             view.getCourseSuccess();
             view.showTip(ConstParameter.GET_SUCCESS);
         } else {

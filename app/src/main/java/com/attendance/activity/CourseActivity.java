@@ -60,7 +60,7 @@ public class CourseActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mTitleTv.setText(R.string.course_detail);
         mCourseNameTv.setText(intent.getStringExtra("name"));
-        mTeacherNameTv.setText(intent.getStringExtra("teacherName"));
+        mTeacherNameTv.setText(R.string.fake_teacher);
         mAttDetailTv.setText(R.string.click_to_see);
         mStudentNumTv.setText(R.string.stu_num);
         mNextLocationTv.setText(R.string.next_location);

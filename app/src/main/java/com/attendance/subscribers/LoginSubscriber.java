@@ -2,6 +2,7 @@ package com.attendance.subscribers;
 
 import com.attendance.contract.LoginContract;
 import com.attendance.entities.ConstParameter;
+import com.attendance.presenter.LoginPresenter;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -12,12 +13,14 @@ import rx.Subscriber;
  * Created by peiqin on 3/5/2017.
  */
 
-public class LoginSubscriber<Boolean> extends Subscriber<Boolean> {
+public class LoginSubscriber extends Subscriber<Boolean> {
 
     private LoginContract.View view;
+    private LoginContract.Presenter presenter;
 
-    public LoginSubscriber(LoginContract.View view) {
+    public LoginSubscriber(LoginContract.Presenter presenter, LoginContract.View view) {
         this.view = view;
+        this.presenter = presenter;
     }
 
     @Override
@@ -28,6 +31,7 @@ public class LoginSubscriber<Boolean> extends Subscriber<Boolean> {
     @Override
     public void onCompleted() {
         view.cancelProgress();
+        presenter.writeData();
         if (!this.isUnsubscribed()) {
             this.unsubscribe();
         }
@@ -52,7 +56,7 @@ public class LoginSubscriber<Boolean> extends Subscriber<Boolean> {
     @Override
     public void onNext(Boolean result) {
 
-        if (result.equals("true")) {
+        if (result) {
             view.showTip(ConstParameter.LOGIN_SUCCESS);
             view.startMainActivity();
         } else {

@@ -1,5 +1,7 @@
 package com.attendance.presenter;
 
+import android.util.Log;
+
 import com.attendance.AttendanceApplication;
 import com.attendance.contract.LoginContract;
 import com.attendance.entities.ConstParameter;
@@ -15,6 +17,10 @@ import com.attendance.utils.SharedFileUtil;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
+    private String username;
+    private String password;
+    private boolean isTeacher;
+    private boolean isRemPassword;
     private final LoginContract.View view;
 
     public LoginPresenter(LoginContract.View view) {
@@ -24,6 +30,14 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void login(String username, String password, boolean isTeacher, boolean isRemPassword) {
+
+        Log.e("Login", username);
+        Log.e("Login", password);
+
+        this.username = username;
+        this.password = password;
+        this.isTeacher = isTeacher;
+        this.isRemPassword = isRemPassword;
 
         if ("".compareTo(username) == 0 || "".compareTo(password) == 0) {
             view.showTip(ConstParameter.LOGIN_WARNING);
@@ -36,12 +50,12 @@ public class LoginPresenter implements LoginContract.Presenter {
             return;
         }
 
-        writeData(username, password, isTeacher, isRemPassword);
-        HttpMethods.getInstance().login(new LoginSubscriber(view), username, password, isTeacher);
+        HttpMethods.getInstance().login(new LoginSubscriber(this, view), username, password, isTeacher);
 
     }
 
-    private void writeData(String username, String password, boolean isTeacher, boolean isRemPassword) {
+    @Override
+    public void writeData() {
         SharedFileUtil sharedFileUtil = new SharedFileUtil();
         sharedFileUtil.putBoolean("hasLogin", true);
         sharedFileUtil.putString("username", username);

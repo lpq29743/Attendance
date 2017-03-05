@@ -152,7 +152,7 @@ public class LoginActivity extends Activity implements LoginContract.View {
                     mPasswordEt.requestFocus();
                     break;
                 case R.id.password_et:
-                    presenter.login(username, password, isTeacher, isRemPassword);
+                    login();
                     break;
             }
             return false;

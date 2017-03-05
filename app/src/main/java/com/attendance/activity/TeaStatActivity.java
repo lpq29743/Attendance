@@ -8,15 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.attendance.R;
 import com.attendance.adapter.ResultDataAdapter;
+import com.attendance.contract.TeaStatContract;
 import com.attendance.customview.StatusBarCompat;
 import com.attendance.entities.ConstParameter;
 import com.attendance.entities.ResultBean;
+import com.attendance.presenter.TeaStatPresenter;
 import com.attendance.utils.NetWorkUtil;
 
 import org.json.JSONArray;
@@ -38,7 +36,7 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 /**
  * Created by peiqin on 2/24/2017.
  */
-public class TeaStatActivity extends AppCompatActivity {
+public class TeaStatActivity extends AppCompatActivity implements TeaStatContract.View {
 
     @BindView(R.id.title_tv)
     TextView mTitleTv;
@@ -47,13 +45,14 @@ public class TeaStatActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private NetWorkUtil netWorkUtils = new NetWorkUtil();
+    private TeaStatContract.Presenter presenter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tea_stat);
         initView();
-        initData();
+        presenter = new TeaStatPresenter(this);
+        presenter.getStatList();
     }
 
     private void initView() {
@@ -76,62 +75,24 @@ public class TeaStatActivity extends AppCompatActivity {
         mResultTv.setColumnComparator(4, MyComparator.getSumComparator());
     }
 
-    private void initData() {
+    @Override
+    public void setPresenter(TeaStatContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
 
-        Intent intent = getIntent();
-        course_id = intent.getIntExtra("course_id", 0);
-        Boolean netStatus = netWorkUtils.checkNetWorkEx(TeaStatActivity.this);
-        if (!netStatus) {
-            Toast.makeText(TeaStatActivity.this, "网络状况不佳，请检查网络情况", Toast.LENGTH_SHORT).show();
-        } else {
-            String url = ConstParameter.SERVER_ADDRESS + "/getTeaStat.php";
-            VolleyUtil volleyUtil = VolleyUtil.getInstance(TeaStatActivity.this);
+    @Override
+    public void showTip(String tip) {
+        Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+    }
 
-            final Map<String, String> getStatListMap = new HashMap<>();
-            getStatListMap.put("courseId", course_id + "");
-            final JSONObject getStatListObject = new JSONObject(getStatListMap);
+    @Override
+    public void getStatSuccess(List list) {
+        mResultTv.setDataAdapter(new ResultDataAdapter(TeaStatActivity.this, list));
+    }
 
-            JsonObjectRequest mGetStatListRequest = new JsonObjectRequest(Request.Method.POST, url, getStatListObject,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject jsonObject) {
-                            try {
-                                if (jsonObject.getString("result").equals("success")) {
-                                    JSONArray getStatListArray = jsonObject.getJSONArray("statList");
-                                    List<ResultBean> list = new ArrayList<>();
-                                    for (int i = 0; i < getStatListArray.length(); i++) {
-                                        JSONObject getStatListObject = getStatListArray.getJSONObject(i);
-                                        list.add(new ResultBean(getStatListObject.getString("name"),
-                                                getStatListObject.getString("attend"),
-                                                getStatListObject.getString("early"),
-                                                getStatListObject.getString("late"),
-                                                getStatListObject.getString("sum")));
-                                    }
-                                    mResultTv.setDataAdapter(new ResultDataAdapter(TeaStatActivity.this, list));
-                                    Toast.makeText(TeaStatActivity.this, ConstParameter.GET_SUCCESS, Toast.LENGTH_SHORT).show();
-                                } else if (jsonObject.getString("result").equals("failed")) {
-                                    Toast.makeText(TeaStatActivity.this, ConstParameter.GET_FAILED, Toast.LENGTH_SHORT).show();
-                                } else if (jsonObject.getString("result").equals("error")) {
-                                    Toast.makeText(TeaStatActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(TeaStatActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (
-                                    JSONException e
-                                    )
-
-                            {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(TeaStatActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
-                }
-            });
-            volleyUtil.addToRequestQueue(mGetStatListRequest);
-        }
+    @OnClick(R.id.back_iv)
+    public void back() {
+        finish();
     }
 
     private static class MyComparator {
@@ -196,11 +157,6 @@ public class TeaStatActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    @OnClick(R.id.back_iv)
-    public void back() {
-        finish();
     }
 
 }

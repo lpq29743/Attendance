@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.attendance.R;
 import com.attendance.dao.CourseDao;
+import com.attendance.entities.CourseBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class CourseAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_course, null);
             vh = new ViewHolder();
-            vh.name = (TextView) convertView.findViewById(R.id.cs_name_tv);
+            vh.name = (TextView) convertView.findViewById(R.id.course_name_tv);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();

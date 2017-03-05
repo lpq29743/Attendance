@@ -25,6 +25,8 @@ public interface LoginContract {
 
         void login(String username, String password, boolean isTeacher, boolean isRemPassword);
 
+        void writeData();
+
     }
 
 }
