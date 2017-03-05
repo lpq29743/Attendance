@@ -15,13 +15,15 @@ public interface LoginContract {
 
         void showProgress(String msg);
 
-        void loginSuccess();
+        void cancelProgress();
+
+        void startMainActivity();
 
     }
 
     interface Presenter extends BasePresenter {
 
-        void login(String username, String password, String isTeacher);
+        void login(String username, String password, boolean isTeacher, boolean isRemPassword);
 
     }
 

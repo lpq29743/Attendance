@@ -2,15 +2,14 @@ package com.attendance.entities;
 
 public class ConstParameter {
 
+    public static final String NETWORK_CORRUPT = "网络中断，请检查您的网络状态";
     public static final String SERVER_ERROR = "服务器错误";
 
     //登录信息
+    public static final String LOGIN_WARNING = "帐号或密码不能为空";
+    public static final String LOGIN_LOADING = "登录中……";
     public static final String LOGIN_SUCCESS = "登录成功";
-    public static final String LOGIN_FAILED = "登录失败！请检查用户名、密码以及身份信息是否填写错误";
-
-    //注册信息
-    public static final String REGISTER_SUCCESS = "注册成功";
-    public static final String REGISTER_FAILED = "用户名已存在";
+    public static final String LOGIN_FAILED = "登录失败！老师请用1和1登录，学生请用2和2登录";
 
     //添加提示
     public static final String ADD_SUCCESS = "添加成功";

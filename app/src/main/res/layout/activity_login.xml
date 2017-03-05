@@ -35,7 +35,7 @@
                 android:background="@drawable/editview"
                 android:hint="@string/username"
                 android:imeOptions="actionNext"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:paddingStart="10dp"
                 android:textSize="15sp" />
 
@@ -65,7 +65,7 @@
                 android:background="@drawable/editview"
                 android:hint="@string/password"
                 android:imeOptions="actionDone"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:inputType="textPassword"
                 android:paddingStart="10dp"
                 android:textSize="15sp" />
@@ -81,7 +81,7 @@
             android:orientation="horizontal">
 
             <RadioGroup
-                android:id="@+id/identity"
+                android:id="@+id/identity_rg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
@@ -89,7 +89,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/teacher"
+                    android:id="@+id/teacher_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_marginStart="30dp"
@@ -97,7 +97,7 @@
                     android:text="@string/teacher" />
 
                 <RadioButton
-                    android:id="@+id/student"
+                    android:id="@+id/student_btn"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="50dp"
@@ -109,7 +109,7 @@
             </RadioGroup>
 
             <CheckBox
-                android:id="@+id/remember_passwd"
+                android:id="@+id/rem_password_cb"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="25dp"
@@ -132,13 +132,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/register_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:paddingBottom="60dp"
-        android:text="@string/register_hint"
-        android:textColor="@color/colorPrimary" />
 </RelativeLayout>
