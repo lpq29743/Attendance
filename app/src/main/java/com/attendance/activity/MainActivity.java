@@ -109,11 +109,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mCourseLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int course_id = ((CourseBean) courseAdapter.getItem(position)).getId();
-                String course_name = ((CourseBean) courseAdapter.getItem(position)).getName();
+                String courseName = ((CourseBean) courseAdapter.getItem(position)).getName();
                 Intent intent = new Intent(MainActivity.this, CourseActivity.class);
-                intent.putExtra("id", course_id);
-                intent.putExtra("name", course_name);
+                intent.putExtra("name", courseName);
                 intent.putExtra("teacherName", R.string.fake_teacher);
                 startActivityForResult(intent, 0);
             }

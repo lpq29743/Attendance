@@ -48,7 +48,6 @@ public class TeaStatActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     private NetWorkUtil netWorkUtils = new NetWorkUtil();
-    private int course_id;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -195,16 +195,6 @@
                         android:paddingStart="6dp"
                         android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/first_tv"
-                        android:layout_width="60dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginEnd="5dp"
-                        android:gravity="center"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="12sp" />
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -219,16 +209,6 @@
                         android:gravity="center_vertical"
                         android:paddingStart="6dp"
                         android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/second_tv"
-                        android:layout_width="60dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginEnd="5dp"
-                        android:gravity="center"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="12sp" />
 
                 </RelativeLayout>
             </LinearLayout>

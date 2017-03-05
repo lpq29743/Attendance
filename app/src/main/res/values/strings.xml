@@ -11,13 +11,8 @@
     <string name="fake_teacher">大神老师</string>
 
     <string name="about_software">关于软件</string>
-    <string name="software_details">此软件运行在Android客户端，利用移动互联网的发展解决校园考勤问题。除此，此软件还可以运用于会议考勤等不同环境下的考勤需求</string>
     <string name="course_detail">课程信息</string>
     <string name="teacher_add_course">您还没有创建过任何课程\n\n请点击添加按钮创建课程</string>
-    <string name="student_search_course">您还没有加入过任何课程\n\n请点击搜索按钮搜索课程</string>
-
-    <string name="add_course">创建课程</string>
-    <string name="course_hint">请输入课程名</string>
 
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
@@ -32,59 +27,16 @@
     <string name="current_attendance">当前\n考勤</string>
     <string name="modify">修改</string>
     <string name="delete">删除</string>
-    <string name="attend_check">上课签到</string>
-    <string name="finish_check">下课签到</string>
     <string name="next_attendance_hint">注：考勤时间为上课前10分钟内及下课后10分钟内</string>
     <string name="view_report">查看考勤结果</string>
-
-    <string name="modify_course_name">修改课程名</string>
-    <string name="modify_course_name_hint">准确的命名可以让同学们更容易找到该门课哦</string>
-
-    <string name="location_list">地点列表</string>
-    <string name="location_detail">地点详情</string>
-    <string name="location_name">地点名</string>
-    <string name="location_attr">地点属性</string>
-
-    <string name="attendance_list">考勤列表</string>
-    <string name="tea_empty_att">您还未创建任何考勤\n\n请点击添加按钮创建考勤</string>
-    <string name="stu_empty_att">该课程还没有任何考勤</string>
-
-    <string name="time_list">时间列表</string>
+    <string name="stu_num">1</string>
+    <string name="next_location">教学楼A座</string>
+    <string name="next_time">星期一 9:00-12:00</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="add">添加</string>
-    <string name="add_location">添加地点</string>
-    <string name="actual_location">具体位置</string>
-    <string name="system_add_location">系统还没有创建过任何地点\n\n请点击添加按钮创建地点信息</string>
-
-    <string name="add_attendance">添加考勤</string>
-    
-    <string name="time_setting">时间设置</string>
-    <string name="begin_time">上课时间</string>
-    <string name="end_time">下课时间</string>
-    <string name="single_double_week">单双周</string>
-    <string name="single_week">单周</string>
-    <string name="double_week">双周</string>
-    <string name="weekday">星期</string>
-    <string name="click_to_set">点击设置</string>
-    <string name="location_setting">地点设置</string>
-
-    <string name="search_hint">请输入课程名或教师名搜索</string>
-    <string name="search_empty">搜索不到相应的课程</string>
     
     <string name="attend_result">考勤结果</string>
     <string name="empty_result">现在还没有任何考勤结果</string>
-
-    <string-array name="week_day">
-        <item>星期一</item>
-        <item>星期二</item>
-        <item>星期三</item>
-        <item>星期四</item>
-        <item>星期五</item>
-        <item>星期六</item>
-        <item>星期日</item>
-    </string-array>
 
 </resources>
