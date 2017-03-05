@@ -3,9 +3,6 @@ package com.attendance;
 import android.app.Application;
 import android.content.Context;
 
-import com.attendance.exception.CrashHandler;
-import com.attendance.utils.SharedFileUtil;
-
 public class AttendanceApplication extends Application {
     public static Context context;
 
@@ -13,9 +10,6 @@ public class AttendanceApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-
-//        CrashHandler crashHandler = CrashHandler.getInstance();
-//        crashHandler.init(getApplicationContext());
     }
 
     public static Context getContext() {

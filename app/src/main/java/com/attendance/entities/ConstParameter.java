@@ -9,7 +9,7 @@ public class ConstParameter {
     public static final String LOGIN_WARNING = "帐号或密码不能为空";
     public static final String LOGIN_LOADING = "登录中……";
     public static final String LOGIN_SUCCESS = "登录成功";
-    public static final String LOGIN_FAILED = "登录失败！老师请用1和1登录，学生请用2和2登录";
+    public static final String LOGIN_FAILED = "登录失败！请用账号1、密码1及老师身份登录";
 
     //添加提示
     public static final String ADD_SUCCESS = "添加成功";

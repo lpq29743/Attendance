@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.attendance.R;
 import com.attendance.dao.CourseDao;
-import com.attendance.entities.CourseBean;
 
 import java.util.ArrayList;
 import java.util.List;

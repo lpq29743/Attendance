@@ -1,5 +1,8 @@
 package com.attendance.http;
 
+import com.attendance.AttendanceApplication;
+import com.attendance.dao.CourseDao;
+
 import java.util.List;
 
 import rx.Observable;
@@ -34,9 +37,21 @@ public class HttpMethods {
         boolean result = false;
         if (username.equals("1") && password.equals("1") && isTeacher) {
             result = true;
-        } else if (username.equals("2") && password.equals("2") && !isTeacher) {
-            result = true;
         }
+        Observable observable = Observable.just(result);
+        toSubscribe(observable, subscriber);
+
+    }
+
+    public void getCourseList(Subscriber<List<Subject>> subscriber) {
+
+        CourseDao courseDao = new CourseDao(AttendanceApplication.getContext());
+        courseDao.delAll();
+        for (int i = 0; i < 5; i++) {
+            courseDao.insert(i, "course " + i);
+        }
+
+        boolean result = true;
         Observable observable = Observable.just(result);
         toSubscribe(observable, subscriber);
 

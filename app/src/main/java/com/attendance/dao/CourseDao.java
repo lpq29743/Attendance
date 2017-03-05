@@ -30,17 +30,8 @@ public class CourseDao {
     /**
      * 添加数据
      */
-    public void insert(int id, String name, String teacherName) {
-        db.execSQL("insert into course values('" + id + "','" + name + "','" + teacherName +"')");
-    }
-
-    /**
-     * 删除数据
-     *
-     * @param id
-     */
-    public void del(int id) {
-        db.execSQL("delete from course where id=" + id);
+    public void insert(int id, String name) {
+        db.execSQL("insert into course values('" + id + "','" + name + "')");
     }
 
     /**
@@ -48,13 +39,6 @@ public class CourseDao {
      */
     public void delAll() {
         db.execSQL("delete from course");
-    }
-
-    /**
-     * 修改数据
-     */
-    public void update(int id, String name) {
-        db.execSQL("update course set name='" + name + "'where id=" + id);
     }
 
 }

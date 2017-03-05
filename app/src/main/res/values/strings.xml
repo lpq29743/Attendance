@@ -8,6 +8,8 @@
     <string name="teacher">教师</string>
     <string name="student">学生</string>
     <string name="rem_password">记住密码</string>
+    <string name="fake_teacher">大神老师</string>
+
     <string name="about_software">关于软件</string>
     <string name="software_details">此软件运行在Android客户端，利用移动互联网的发展解决校园考勤问题。除此，此软件还可以运用于会议考勤等不同环境下的考勤需求</string>
     <string name="course_detail">课程信息</string>

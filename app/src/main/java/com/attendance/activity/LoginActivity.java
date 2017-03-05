@@ -83,10 +83,10 @@ public class LoginActivity extends Activity implements LoginContract.View {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 switch (radioGroup.getCheckedRadioButtonId()) {
-                    case R.id.teacher:
+                    case R.id.teacher_btn:
                         isTeacher = true;
                         break;
-                    case R.id.student:
+                    case R.id.student_btn:
                         isTeacher = false;
                         break;
                 }

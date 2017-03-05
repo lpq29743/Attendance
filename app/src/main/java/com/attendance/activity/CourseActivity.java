@@ -23,7 +23,6 @@ import com.attendance.customview.StatusBarCompat;
 import com.attendance.entities.ConstParameter;
 import com.attendance.utils.NetWorkUtil;
 import com.attendance.utils.SharedFileUtil;
-import com.attendance.utils.VolleyUtil;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -200,125 +199,6 @@ public class CourseActivity extends AppCompatActivity {
             }
 
         }
-    }
-
-    private void check(boolean isAttend) {
-        boolean localMode = sharedFileUtil.getBoolean("localMode");
-        if (localMode) {
-            //本地数据测试
-        } else {
-            Boolean netStatus = netWorkUtils.checkNetWorkEx(CourseActivity.this);
-            Boolean isOpen = Settings.Secure.getInt(getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION, 0) != 0;
-            if (!netStatus) {
-                Toast.makeText(CourseActivity.this, "网络状况不佳，请检查网络情况", Toast.LENGTH_SHORT).show();
-            } else if (Build.VERSION.SDK_INT <= 22 || isOpen) {
-                Toast.makeText(CourseActivity.this, "定位失败，需关闭模拟位置功能", Toast.LENGTH_SHORT).show();
-            } else {
-                new CheckTask().execute(isAttend);
-            }
-        }
-    }
-
-    private class CheckTask extends AsyncTask<Boolean, Void, Boolean> {
-        boolean isAttend;
-
-        @Override
-        protected void onPreExecute() {
-            showProgressDialog("签到中");
-        }
-
-        @Override
-        protected Boolean doInBackground(Boolean... params) {
-            isAttend = params[0];
-            String timeUrl = "http://www.beijing-time.org";
-            String mCheckTime;
-            isAttend = params[0];
-            if (isAttend) {
-                mCheckTime = nextAttend;
-            } else {
-                mCheckTime = nextFinish;
-            }
-            try {
-                URL url = new URL(timeUrl);// 取得资源对象
-                URLConnection uc = url.openConnection();// 生成连接对象
-                uc.connect();// 发出连接
-                long ld = uc.getDate();// 读取网站日期时间
-                Date date = new Date(ld);
-                SimpleDateFormat sdf1 = new SimpleDateFormat("EEEE", Locale.CHINA);
-                if (sdf1.format(date).equals(nextWeekDay)) {
-                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-                    SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);// 输出北京时间
-                    Date date0 = sdf3.parse(sdf2.format(date) + " " + mCheckTime);
-                    long diff = date.getTime() - date0.getTime();
-                    if (isAttend && diff < 0 && diff > -1000 * 60 * 10) {
-                        return true;
-                    } else if (!isAttend && diff > 0 && diff < -1000 * 60 * 10) {
-                        return true;
-                    }
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (!result) {
-                progressDialog.cancel();
-                Toast.makeText(CourseActivity.this, "不好意思，现在不是签到时间", Toast.LENGTH_SHORT).show();
-            } else {
-                String url = "";
-                if (isAttend) {
-                    url = ConstParameter.SERVER_ADDRESS + "/attendCheck.php";
-                } else {
-                    url = ConstParameter.SERVER_ADDRESS + "/finishCheck.php";
-                }
-                VolleyUtil volleyUtil = VolleyUtil.getInstance(CourseActivity.this);
-
-                final Map<String, String> checkMap = new HashMap<>();
-                checkMap.put("courseId", course_id + "");
-                checkMap.put("username", sharedFileUtil.getString("username"));
-                checkMap.put("longitude", mLongitude + "");
-                checkMap.put("latitude", mLatitude + "");
-                TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                checkMap.put("androidKey", tm.getDeviceId());
-                final JSONObject checkObject = new JSONObject(checkMap);
-
-                JsonObjectRequest mCheckRequest = new JsonObjectRequest(Request.Method.POST, url, checkObject,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject jsonObject) {
-                                try {
-                                    progressDialog.cancel();
-                                    if (jsonObject.getString("result").equals("success")) {
-                                        Toast.makeText(CourseActivity.this, ConstParameter.SIGN_SUCCESS, Toast.LENGTH_SHORT).show();
-                                    } else if (jsonObject.getString("result").equals("failed")) {
-                                        Toast.makeText(CourseActivity.this, ConstParameter.SIGN_FAILED, Toast.LENGTH_SHORT).show();
-                                    } else if (jsonObject.getString("result").equals("error")) {
-                                        Toast.makeText(CourseActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(CourseActivity.this, ConstParameter.SERVER_ERROR, Toast.LENGTH_SHORT).show();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        progressDialog.cancel();
-                        Toast.makeText(CourseActivity.this, volleyError.getMessage() + "", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                volleyUtil.addToRequestQueue(mCheckRequest);
-            }
-        }
-
     }
 
     private void showProgressDialog(String message) {

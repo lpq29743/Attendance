@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +18,6 @@ import com.attendance.customview.StatusBarCompat;
 import com.attendance.entities.ConstParameter;
 import com.attendance.entities.ResultBean;
 import com.attendance.utils.NetWorkUtil;
-import com.attendance.utils.VolleyUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
