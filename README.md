@@ -8,6 +8,7 @@
 * 采用Material Design的设计理念
 * 使用了RxJava+RxAndroid框架
 * 使用了开源控件SortableTableView
+* 使用了Kotlin和Anko
 
 ## CHANGELOG
 项目版本记录：[CHANGELOG](https://github.com/lpq29743/Attendance/blob/master/CHANGELOG.md)
