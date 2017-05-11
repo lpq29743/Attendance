@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import butterknife.ButterKnife
 
 import com.attendance.R
 import com.attendance.adapter.ResultDataAdapter
@@ -16,9 +18,7 @@ import com.attendance.presenter.TeaStatPresenter
 
 import java.util.Comparator
 
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
+import butterknife.bindView
 import de.codecrafters.tableview.SortableTableView
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter
 
@@ -27,12 +27,10 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter
  */
 class TeaStatActivity : AppCompatActivity(), TeaStatContract.View {
 
-    @BindView(R.id.title_tv)
-    internal var mTitleTv: TextView? = null
-    @BindView(R.id.result_tv)
-    internal var mResultTv: SortableTableView<ResultBean>? = null
-    @BindView(R.id.toolbar)
-    internal var toolbar: Toolbar? = null
+    internal val mTitleTv: TextView by bindView(R.id.title_tv)
+    internal val mResultTv: SortableTableView<ResultBean> by bindView(R.id.result_tv)
+    internal val mBackIv: ImageView by bindView(R.id.back_iv)
+    internal val toolbar: Toolbar by bindView(R.id.toolbar)
 
     private var presenter: TeaStatContract.Presenter? = null
 
@@ -53,15 +51,20 @@ class TeaStatActivity : AppCompatActivity(), TeaStatContract.View {
         //隐藏Toolbar的标题
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        mTitleTv!!.setText(R.string.attend_result)
+        mTitleTv.setText(R.string.attend_result)
 
         val title = arrayOf("姓名", "出勤", "早退", "迟到", "总计")
-        mResultTv!!.headerAdapter = SimpleTableHeaderAdapter(this, *title)
-        mResultTv!!.setColumnComparator(0, MyComparator.nameComparator)
-        mResultTv!!.setColumnComparator(1, MyComparator.attendComparator)
-        mResultTv!!.setColumnComparator(2, MyComparator.earlyComparator)
-        mResultTv!!.setColumnComparator(3, MyComparator.lateComparator)
-        mResultTv!!.setColumnComparator(4, MyComparator.sumComparator)
+        mResultTv.headerAdapter = SimpleTableHeaderAdapter(this, *title)
+        mResultTv.setColumnComparator(0, MyComparator.nameComparator)
+        mResultTv.setColumnComparator(1, MyComparator.attendComparator)
+        mResultTv.setColumnComparator(2, MyComparator.earlyComparator)
+        mResultTv.setColumnComparator(3, MyComparator.lateComparator)
+        mResultTv.setColumnComparator(4, MyComparator.sumComparator)
+
+        mBackIv.setOnClickListener {
+            finish()
+        }
+
     }
 
     override fun setPresenter(presenter: TeaStatContract.Presenter) {
@@ -73,12 +76,7 @@ class TeaStatActivity : AppCompatActivity(), TeaStatContract.View {
     }
 
     override fun getStatSuccess(list: List<ResultBean>) {
-        mResultTv!!.setDataAdapter(ResultDataAdapter(this@TeaStatActivity, list))
-    }
-
-    @OnClick(R.id.back_iv)
-    fun back() {
-        finish()
+        mResultTv.setDataAdapter(ResultDataAdapter(this@TeaStatActivity, list))
     }
 
     private object MyComparator {

@@ -5,46 +5,35 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.Nullable
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 
 import com.attendance.R
 import com.attendance.contract.LoginContract
 import com.attendance.presenter.LoginPresenter
 import com.attendance.utils.SharedFileUtil
 
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
+import butterknife.bindView
 
 class LoginActivity : Activity(), LoginContract.View {
 
-    @BindView(R.id.username_et)
-    internal var mUsernameEt: EditText? = null
-    @BindView(R.id.password_et)
-    internal var mPasswordEt: EditText? = null
-    @BindView(R.id.rem_password_cb)
-    internal var mRemPasswordCb: CheckBox? = null
-    @BindView(R.id.identity_rg)
-    internal var mIdentityRg: RadioGroup? = null
-    @BindView(R.id.teacher_btn)
-    internal var mTeaBtn: RadioButton? = null
-    @BindView(R.id.student_btn)
-    internal var mStuBtn: RadioButton? = null
+    internal val mUsernameEt: EditText by bindView(R.id.username_et)
+    internal val mPasswordEt: EditText by bindView(R.id.password_et)
+    internal val mRemPasswordCb: CheckBox by bindView(R.id.rem_password_cb)
+    internal val mIdentityRg: RadioGroup by bindView(R.id.identity_rg)
+    internal val mTeaBtn: RadioButton by bindView(R.id.teacher_btn)
+    internal val mStuBtn: RadioButton by bindView(R.id.student_btn)
+    internal val mLoginBtn: Button by bindView(R.id.login_btn)
 
     private var username = ""
     private var password = ""
     private var isTeacher = false
     private var isRemPassword = false
 
-    private var myEditorActionListener: MyEditorActionListener? = null
     private var sharedFileUtil: SharedFileUtil? = null
     private var progressDialog: ProgressDialog? = null
     private var presenter: LoginContract.Presenter? = null
@@ -57,32 +46,31 @@ class LoginActivity : Activity(), LoginContract.View {
     }
 
     private fun initView() {
-        ButterKnife.bind(this)
 
         sharedFileUtil = SharedFileUtil()
         username = sharedFileUtil!!.getString("username")
-        mUsernameEt!!.setText(username)
+        mUsernameEt.setText(username)
         isTeacher = sharedFileUtil!!.getBoolean("isTeacher")
         if (isTeacher) {
-            mTeaBtn!!.isChecked = true
+            mTeaBtn.isChecked = true
         } else {
-            mStuBtn!!.isChecked = true
+            mStuBtn.isChecked = true
         }
         isRemPassword = sharedFileUtil!!.getBoolean("isRemPassword")
         if (isRemPassword) {
-            mRemPasswordCb!!.isChecked = true
-            mPasswordEt!!.setText(password)
+            mRemPasswordCb.isChecked = true
+            mPasswordEt.setText(password)
         }
 
-        myEditorActionListener = MyEditorActionListener()
-        mUsernameEt!!.setOnEditorActionListener(myEditorActionListener)
-        mPasswordEt!!.setOnEditorActionListener(myEditorActionListener)
-
-        mIdentityRg!!.setOnCheckedChangeListener { radioGroup, checkedId ->
+        mIdentityRg.setOnCheckedChangeListener { radioGroup, checkedId ->
             when (radioGroup.checkedRadioButtonId) {
                 R.id.teacher_btn -> isTeacher = true
                 R.id.student_btn -> isTeacher = false
             }
+        }
+
+        mLoginBtn.setOnClickListener {
+            login()
         }
 
     }
@@ -116,30 +104,11 @@ class LoginActivity : Activity(), LoginContract.View {
         this@LoginActivity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
-    @OnClick(R.id.login_btn)
     fun login() {
-        username = mUsernameEt!!.text.toString()
-        password = mPasswordEt!!.text.toString()
-        if (mRemPasswordCb!!.isChecked) {
-            isRemPassword = true
-        } else {
-            isRemPassword = false
-        }
+        username = mUsernameEt.text.toString()
+        password = mPasswordEt.text.toString()
+        isRemPassword = mRemPasswordCb.isChecked
         presenter!!.login(username, password, isTeacher, isRemPassword)
-    }
-
-    private inner class MyEditorActionListener : TextView.OnEditorActionListener {
-
-        override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
-            when (v.id) {
-                R.id.username_et ->
-                    // 密码输入框获取焦点
-                    mPasswordEt!!.requestFocus()
-                R.id.password_et -> login()
-            }
-            return false
-        }
-
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

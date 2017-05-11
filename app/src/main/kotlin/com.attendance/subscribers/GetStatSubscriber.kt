@@ -29,7 +29,6 @@ class GetStatSubscriber(private val view: TeaStatContract.View) : Subscriber<Res
     }
 
     override fun onError(e: Throwable) {
-
         if (e is SocketTimeoutException || e is ConnectException) {
             view.showTip(ConstParameter.NETWORK_CORRUPT)
         } else {
@@ -39,13 +38,10 @@ class GetStatSubscriber(private val view: TeaStatContract.View) : Subscriber<Res
         if (!this.isUnsubscribed) {
             this.unsubscribe()
         }
-
     }
 
     override fun onNext(resultBean: ResultBean) {
-
-        list!!.add(resultBean)
-
+        list.add(resultBean)
     }
 
 }
