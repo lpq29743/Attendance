@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="60dp"
-    tools:context="com.attendance.activity.MainActivity">
+    tools:context="com.attendance.courses.CoursesActivity">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"

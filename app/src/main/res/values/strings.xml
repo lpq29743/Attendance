@@ -35,8 +35,18 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    
+
     <string name="attend_result">考勤结果</string>
     <string name="empty_result">现在还没有任何考勤结果</string>
+
+    <string name="network_corrupt">网络中断，请检查您的网络状态</string>
+
+    <string name="login_warning">帐号或密码不能为空</string>
+    <string name="login_loading">登录中……</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_failed">登录失败！请用账号1、密码1及老师身份登录</string>
+
+    <string name="get_success">获取信息成功</string>
+    <string name="get_failed">获取信息失败</string>
 
 </resources>
