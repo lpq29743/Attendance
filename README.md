@@ -4,11 +4,11 @@
 
 ## 截图
 
-<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/login.png" height="400" alt="登录" align=center />
-<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/navigation.png" height="400" alt="侧边栏" align=center />
-<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/courses.png" height="400" alt="课程列表" align=center />
-<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/coursedetail.png" height="400" alt="课程详情" align=center />
-<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/attendresults.png" height="400" alt="考勤结果" align=center />
+<img src="https://github.com/lpq29743/Attendance/blob/master/screenshots/login.png" height="400" alt="登录" align=center />
+<img src="https://github.com/lpq29743/Attendance/blob/master/screenshots/navigation.png" height="400" alt="侧边栏" align=center />
+<img src="https://github.com/lpq29743/Attendance/blob/master/screenshots/courses.png" height="400" alt="课程列表" align=center />
+<img src="https://github.com/lpq29743/Attendance/blob/master/screenshots/coursedetail.png" height="400" alt="课程详情" align=center />
+<img src="https://github.com/lpq29743/Attendance/blob/master/screenshots/attendresults.png" height="400" alt="考勤结果" align=center />
 
 ## 用到的第三方库
 
