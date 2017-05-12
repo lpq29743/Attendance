@@ -1,13 +1,19 @@
-﻿# Attendance 基于Android的校园考勤软件
+﻿# Attendance
 
-大学阶段的项目成果，原程序实现了校园考勤。为了巩固知识，我将代码适当重构并删除了部分功能后上传至此
+本工程是在自己大学阶段的校级项目成果上，进行部分功能的删减修改及代码重构后完成的。项目主要是起到练手作用，采用了MVP架构，遵循Material Design的设计理念，并使用了RxJava、RxAndroid和ButterKnife等开源框架，附带[kotlin版本](https://github.com/lpq29743/Attendance/tree/kotlin)，欢迎star和提issue和PR，共同学习，共同进步！
 
-## 特点
+## 截图
 
-* 采用了MVP架构
-* 采用Material Design的设计理念
-* 使用了RxJava+RxAndroid框架
-* 使用了开源控件SortableTableView
+<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/login.png" height="400" alt="登录" align=center />
+<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/navigation.png" height="400" alt="侧边栏" align=center />
+<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/courses.png" height="400" alt="课程列表" align=center />
+<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/coursedetail.png" height="400" alt="课程详情" align=center />
+<img src="https://github.com/lpq29743/Attendance/tree/master/screenshots/attendresults.png" height="400" alt="考勤结果" align=center />
 
-## CHANGELOG
-项目版本记录：[CHANGELOG](https://github.com/lpq29743/Attendance/blob/master/CHANGELOG.md)
+## 用到的第三方库
+
+* ButterKnife - https://github.com/JakeWharton/butterknife
+* RxJava - https://github.com/ReactiveX/RxJava
+* RxAndroid - https://github.com/ReactiveX/RxAndroid
+* SortableTableView - https://github.com/ISchwarz23/SortableTableView
+* greenDAO - https://github.com/greenrobot/greenDAOz
